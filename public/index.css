@@ -1,0 +1,24 @@
+* {box-sizing: border-box}
+
+input {
+  font-size: 17;
+}
+
+/* Container needed to position the overlay. Adjust the width as needed */
+.container {
+  position: relative;
+  width: 50%;
+  max-width: 400px;
+}
+
+/* Make the image to responsive */
+.image {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.resultater {
+    margin-top: 10px;
+    font-size: 28;
+}

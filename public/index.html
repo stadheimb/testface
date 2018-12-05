@@ -1,0 +1,53 @@
+<html>
+
+<script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+    crossorigin="anonymous"></script>
+
+<link rel="stylesheet" type="text/css" href="index.css">
+
+<script>
+    function computeAge() {
+        $('#resultat').html("")
+        $.ajax({
+            url: '/age',
+
+        })
+        .done( function(data) {
+            $('#resultat').html("")
+            if(data) {
+                if(data.status == 'ok') {
+                    if(data.predictions && data.predictions.length > 0) {
+                        $('#resultat').text(data.predictions[0].age_estimation + "år gammel")
+                    } else {
+                        $('#resultat').text("Kan ikke bestemme alder")
+                    }
+                } else {
+                    $('#resultat').text("Kan ikke bestemme alder")
+                }
+            }            
+        })
+    }
+</script>
+
+<body>
+
+    <div style='margin-left: 30%'>
+
+        <p>Velg bilde og klikk 'Beregn alder'</p>
+
+        <div class='container'>
+            <img id="bilde" class="image" src="/last_upload.jpg">
+        </div>
+
+        <form action="/file-upload" method="post" enctype="multipart/form-data">
+            <input type="file" name="file" onchange="submit()" />
+        </form>
+
+        <input type="button" onclick="computeAge()" value="Beregn alder">
+
+        <div class="resultater" id="resultat" />
+
+    </div>
+</body>
+
+</html>
