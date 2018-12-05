@@ -6,18 +6,32 @@ const exec = require('child_process').exec
 const fs = require('fs')
 const upload = multer({ dest: 'public/' })
 
+function faceModelCmd(file) {
+    return `curl -X POST -F image=@${file} http://169.51.70.103:32487/model/predict`;
+}
 function computeAge(file, res) {
-    exec(`curl -X POST -F image=@${file} http://169.51.70.103:32487/model/predict`, (err, stdout, stderr) => {
+    exec(faceModelCmd(file), (err, stdout, stderr) => {
         if(err) {
-            console.log("err", err)
+            console.log("ERROR", err)
             res.send(err)
             res.status(500)
         } else {
             // fs.unlinkSync(file)
-            console.log("stdout", stdout)
+            console.log("OK", stdout)
             res.contentType("application/json")
             res.send(stdout)
             res.status(200);
+        }
+    })
+}
+
+function testConnection() {
+    console.log('Tester forbindelse med face model ....')
+    exec(faceModelCmd('public/test_image.jpg'), (err, stdout, stderr) => {
+        if(err) {
+            console.log("ERROR", err)
+        } else {
+            console.log("OK", stdout)
         }
     })
 }
@@ -48,4 +62,5 @@ app.use(express.static('public'))
 
 app.listen(process.env.PORT || 4000, () => {
     console.log('Listening on port', (process.env.PORT || 4000))
+    testConnection()
 })
