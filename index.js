@@ -38,12 +38,6 @@ function testConnection() {
 
 app.use(bodyParser.json());
 
-app.post('/model/predict', upload.any(), (req, res) => {
-    var file = req.files[0];
-    console.log("FILE", file)
-    computeAge(file.path, res)
-});
-
 app.post('/file-upload', upload.any(), (req, res) => {
     try {
         fs.unlinkSync("public/last_upload.jpg")
