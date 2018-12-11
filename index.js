@@ -52,6 +52,21 @@ app.get('/age', (req, res) => {
     computeAge(path, res)
 })
 
+app.get('/bilder', (req, res) => {
+    files = fs.readdirSync('public').filter(item => {
+        return item.endsWith('.jpg') && item != "last_upload.jpg"
+    })
+    res.send(files.map(item => {
+        return `<li><a href='bruk?bilde=${item}'>${item}</a></li>`
+    }))
+})
+
+app.get('/bruk', (req, res) => {
+    console.log(req.query)
+    fs.copyFileSync(`public/${req.query.bilde}`, 'public/last_upload.jpg')
+    res.redirect('/index.html');
+})
+
 app.use(express.static('public'))
 
 app.listen(process.env.PORT || 4000, () => {

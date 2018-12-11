@@ -6,6 +6,16 @@
 <link rel="stylesheet" type="text/css" href="index.css">
 
 <script>
+    window.onload = function() {
+        console.log('onload called')
+        $.ajax({
+            url:'/bilder'
+        })
+        .done(function(data) {
+            $('#bilder').html(data)
+        })
+    }
+    
     function computeAge() {
         $('#resultat').html("")
         $.ajax({
@@ -31,21 +41,32 @@
 
 <body>
 
-    <div style='margin-left: 30%'>
+    <div style='margin-left: 30%; margin-top: 10%;'>
 
-        <p>Velg bilde og klikk 'Beregn alder'</p>
+        <p>Last opp bilde og klikk 'Beregn alder'</p>
 
-        <div class='container'>
-            <img id="bilde" class="image" src="/last_upload.jpg">
-        </div>
+        <table>
+            <tr>
+                <td width="60%">
+                    <div class='container'>
+                        <img id="bilde" class="image" src="/last_upload.jpg">
+                    </div>
 
-        <form action="/file-upload" method="post" enctype="multipart/form-data">
-            <input type="file" name="file" onchange="submit()" />
-        </form>
+                    <form action="/file-upload" method="post" enctype="multipart/form-data">
+                        <input type="file" name="file" onchange="submit()" />
+                    </form>
 
-        <input type="button" onclick="computeAge()" value="Beregn alder">
+                    <input type="button" onclick="computeAge()" value="Beregn alder">
 
-        <div class="resultater" id="resultat" />
+                    <div class="resultater" id="resultat" />
+
+                </td>
+                <td valign="top">
+                    Eller velg fra noen forh&aring;ndsinstallerte bilder
+                    <ul class="bilder" id="bilder" />
+                </td>
+            </tr>
+        </table>
 
     </div>
 </body>
